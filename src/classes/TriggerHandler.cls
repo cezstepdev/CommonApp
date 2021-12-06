@@ -10,6 +10,7 @@ public virtual class TriggerHandler {
 
     public TriggerHandler () {
         this.setTriggerContext();
+        System.debug('dupa');
     }
 
     public void run () {
