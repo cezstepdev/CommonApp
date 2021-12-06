@@ -1,4 +1,5 @@
-public with sharing class AccountTriggerHandler  extends TriggerHandler{
+
+public with sharing class AccountTriggerHandler extends TriggerHandler {
     private List<Account> newList;
     private List<Account> oldList;
     private Map<Id, Account> newMap;
