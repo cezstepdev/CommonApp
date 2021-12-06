@@ -10,7 +10,6 @@ public virtual class TriggerHandler {
 
     public TriggerHandler () {
         this.setTriggerContext();
-        System.debug('dupppppppa');
     }
 
     public void run () {
