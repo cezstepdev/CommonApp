@@ -1,3 +1,4 @@
+
 public with sharing class AccountTriggerHandler extends TriggerHandler {
     private List<Account> newList;
     private List<Account> oldList;
@@ -12,6 +13,9 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
     }
 
     public override void beforeInsert() {
-        System.debug('TEST');
+        for(Account account : newList){
+            account.Rating = 'Hot';
+        }
+        insert newList;
     }
 }
