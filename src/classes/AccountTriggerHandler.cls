@@ -15,7 +15,7 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
     public override void beforeInsert() {
         for(Account account : newList){
             account.Rating = 'Hot';
+            account.Phone = '997';
         }
-        insert newList;
     }
 }
