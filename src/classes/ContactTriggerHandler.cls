@@ -12,9 +12,14 @@ public with sharing class ContactTriggerHandler extends TriggerHandler {
     }
 
     public override void afterInsert() {
-        Account account = [SELECT Name FROM Contact WHERE Id =: newList.get(0).AccountId];
-        for(Contact contact : newList){
-            account.Name += ' i '+contact.FirstName;
+        Account account = [SELECT Name FROM Contact WHERE Id = :newList.get(0).AccountId];
+
+        account.Name = '';
+        for (Contact contact : [SELECT FirstName FROM Contact WHERE AccountId = :account.Id]) {
+            account.Name += contact.FirstName + ' ';
+        }
+        for (Contact contact : newList) {
+            account.Name += ' i ' + contact.FirstName;
         }
         update account;
     }
