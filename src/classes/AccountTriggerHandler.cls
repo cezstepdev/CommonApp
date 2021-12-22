@@ -16,6 +16,7 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
         for(Account account : newList){
             account.Rating = 'Hot';
             account.Phone = '997';
+            //test
         }
     }
 }
