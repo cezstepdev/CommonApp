@@ -1,0 +1,63 @@
+<template  >
+    <div class="demo-only">
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_large"
+            aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+            <div class="slds-modal__container" style="width: 50%;">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close">
+                        <lightning-icon icon-name="utility:close" size="medium" onclick={navigateToObjectHome}>
+                        </lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01-addemercont" class="slds-text-heading_medium slds-hyphenate">
+                        Create New Call
+                    </h2>
+                </header>
+                <div style="height: 50%;" class="slds-modal__content slds-p-around_medium">
+                    <div class="slds-align_absolute-center slsd-m-around_small">
+                        <lightning-input type="datetime" label="Enter a date/time value" onchange={onDateChange}></lightning-input>
+                    </div>
+                    <lightning-radio-group 
+                        label="Select group or members"
+                        options={options}
+                        value={selectedOption}
+                        type="button"
+                        onchange={onSwitchChange}
+                    >
+                    </lightning-radio-group>
+                    <template if:true={isAccountSelected}>
+                        <lightning-record-edit-form object-api-name="Contact">
+                            <lightning-input-field field-name="AccountId" label="Training Group" onchange={handleAccountSelection} required> </lightning-input-field>
+                        </lightning-record-edit-form>
+                    </template>
+                    <!--  -->
+                    <template if:false={isAccountSelected}>
+                        <div style="max-height: 15rem;">
+                            <lightning-input type="search" onchange={handleKeyChange} class="slds-m-bottom_small" label="Search"
+                            ></lightning-input>
+                            <lightning-datatable 
+                                key-field="Id" 
+                                data={data} 
+                                columns={columns} 
+                                sorted-by={sortedBy}
+                                sorted-direction={sortedDirection} 
+                                onsort={sortColumns}
+                                >
+                            </lightning-datatable>
+                        </div>
+                    </template>
+                    <!--  -->
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" variant="neutral" onclick={navigateToObjectHome}>
+                    </lightning-button>
+                    &nbsp;&nbsp;
+                    <lightning-button variant="brand" label="Save" onclick={onSaveClick}>
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+</template>
