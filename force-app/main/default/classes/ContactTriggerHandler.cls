@@ -1,27 +1,34 @@
 public with sharing class ContactTriggerHandler extends TriggerHandler {
-    private List<Account> newList;
-    private List<Account> oldList;
-    private Map<Id, Account> newMap;
-    private Map<Id, Account> oldMap;
+    private List<Contact> newList;
+    private List<Contact> oldList;
+    private Map<Id, Contact> newMap;
+    private Map<Id, Contact> oldMap;
 
     public ContactTriggerHandler () {
         this.newList = Trigger.new;
         this.oldList = Trigger.old;
-        this.newMap = (Map<Id, Account>)Trigger.newMap;
-        this.oldMap = (Map<Id, Account>)Trigger.oldMap;
+        this.newMap = (Map<Id, Contact>)Trigger.newMap;
+        this.oldMap = (Map<Id, Contact>)Trigger.oldMap;
     }
 
     public override void afterInsert() {
-
-        Account account = [SELECT Name FROM Contact WHERE Id = :newList.get(0).AccountId];
+        handleAccountNameChange();
+    }
+    public override void beforeUpdate() {
+        handleAccountNameChange();
+    }
+    public void handleAccountNameChange(){
+        Account account = [SELECT Name FROM Account WHERE Id = :newList.get(0).AccountId];
+        System.debug(account);
 
         account.Name = '';
         for (Contact contact : [SELECT FirstName FROM Contact WHERE AccountId = :account.Id]) {
             account.Name += contact.FirstName + ' ';
         }
-        for (Contact contact : newList) {
-            account.Name += ' i ' + contact.FirstName;
-        }
+        // for (Contact contact : newList) {
+        //     account.Name += ' ' + contact.FirstName;
+        // }
+        System.debug(account.Name);
         update account;
     }
 }
