@@ -16,7 +16,6 @@ export default class newButtonAction extends NavigationMixin(
    
     selectedAccount;
     selectedRows;
-    callDate;
     selectedOption = 'account';
     @track value;
     @track error;
@@ -28,6 +27,11 @@ export default class newButtonAction extends NavigationMixin(
     @track items = []; 
     @track data = []; 
     @track columns; 
+    callDate;
+
+    connectedCallback() {
+        this.callDate = this.currentDate = new Date().toISOString();
+    }
 
     handleAccountSelection(event) {
         this.selectedAccount = event.target.value;
@@ -92,6 +96,7 @@ export default class newButtonAction extends NavigationMixin(
 
     onDateChange(event) {
         this.callDate = event.target.value;
+        console.log(event.target.value);
     }
     
     onSaveClick() {
