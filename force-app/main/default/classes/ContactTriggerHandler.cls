@@ -19,8 +19,8 @@ public with sharing class ContactTriggerHandler extends TriggerHandler {
     }
     public void handleAccountNameChange(){
         Account account = [SELECT Name FROM Account WHERE Id = :newList.get(0).AccountId];
-
         account.Name = '';
+
         for (Contact contact : [SELECT FirstName FROM Contact WHERE AccountId = :account.Id]) {
             account.Name += contact.FirstName + ' ';
         }
