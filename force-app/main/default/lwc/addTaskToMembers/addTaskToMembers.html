@@ -1,0 +1,11 @@
+<template>
+    <lightning-card title="HelloConditionalRendering" icon-name="custom:custom14">
+        <lightning-record-view-form record-id={recordId} object-api-name="Call__c">
+            <div class="slds-m-around_medium">
+                <lightning-checkbox-group name="Checkbox Group" label="Select a Call Member" options={comms}
+                    value={value} onchange={handleChange}>
+                </lightning-checkbox-group>
+            </div>
+        </lightning-record-view-form>
+    </lightning-card>
+</template>
