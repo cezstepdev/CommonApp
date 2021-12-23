@@ -5,7 +5,8 @@ import getCallMembersList from '@salesforce/apex/FirstClass.getCallMembersList';
 export default class AddTaskToMembers extends LightningElement {
     @api recordId;
     @track CallMembers = [];
-
+    @track value = ["Option1"];
+    @track error;
 
     @wire(getCallMembersList, { callId: "$recordId" })
     callMembersList({ error, data }) {
@@ -21,8 +22,12 @@ export default class AddTaskToMembers extends LightningElement {
     get comms() {
         let alist = [];
         this.CallMembers.forEach(function(element) {
-          alist.push({ label: element["Id"], value: element["Name"] });
+          alist.push({ label: element["Contact__r"]["Name"], value: element["Contact__r"]["Name"] });
         });
         return alist;
+      }
+
+      handleChange(e) {
+        this.value = e.detail.value;
       }
 }
