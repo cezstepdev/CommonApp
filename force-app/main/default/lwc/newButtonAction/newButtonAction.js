@@ -15,7 +15,7 @@ export default class newButtonAction extends NavigationMixin(
 ) {
    
     selectedAccount;
-    selectedRows;
+    selectedRows = [];
     selectedOption = 'account';
     @track value;
     @track error;
@@ -28,6 +28,7 @@ export default class newButtonAction extends NavigationMixin(
     @track data = []; 
     @track columns; 
     callDate;
+    callType = 'Szkolenie';
 
     connectedCallback() {
         this.callDate = this.currentDate = new Date().toISOString();
@@ -88,25 +89,33 @@ export default class newButtonAction extends NavigationMixin(
     }
 
     getSelectedProducts() {
-        let selectedProducts = this.template.querySelector('lightning-datatable').getSelectedRows();
-        selectedProducts.forEach(element => {
-            this.selectedRows.push(element.id);
-        })
+        if(this.template.querySelector('lightning-datatable')) {
+            let selectedProducts = this.template.querySelector('lightning-datatable').getSelectedRows();
+            selectedProducts.forEach(element => {
+                this.selectedRows.push(element.Id);
+            })
+        }
     }
 
     onDateChange(event) {
         this.callDate = event.target.value;
         console.log(event.target.value);
     }
+
+    onTypeChange(event) {
+        this.callType = event.target.value;
+    }
     
     onSaveClick() {
         this.getSelectedProducts();
-        console.log(this.selectedRows);
-        addCall({
+        let call = {
             accountId: this.selectedAccount,
             callDate: this.callDate,
-            members: this.selectedRows
-        }).then(res => {
+            members: this.selectedRows,
+            callType: this.callType
+        };
+
+        addCall({myCall: call}).then(res => {
             this[NavigationMixin.Navigate]({
                 type: "standard__recordPage",
                 attributes: {
