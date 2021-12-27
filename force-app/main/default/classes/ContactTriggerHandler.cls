@@ -18,6 +18,7 @@ public with sharing class ContactTriggerHandler extends TriggerHandler {
         handleAccountNameChange();
     }
     public void handleAccountNameChange(){
+        if(newList.get(0).AccountId != null){
         Account account = [SELECT Name FROM Account WHERE Id = :newList.get(0).AccountId];
         account.Name = '';
 
@@ -26,4 +27,5 @@ public with sharing class ContactTriggerHandler extends TriggerHandler {
         }
         update account;
     }
+}
 }
