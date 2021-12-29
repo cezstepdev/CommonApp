@@ -1,5 +1,5 @@
 import { LightningElement, api, wire, track } from 'lwc';
-import getCallMembersList from '@salesforce/apex/FirstClass.getCallMembersList';
+import getCallMembersList from '@salesforce/apex/TaskController.getCallMembersList';
 
 
 export default class AddTaskToMembers extends LightningElement {

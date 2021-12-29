@@ -1,6 +1,6 @@
-public with sharing class FirstClass {
-    public FirstClass() {
-        System.debug('hi');
+public with sharing class CallController1 {
+    public CallController1() {
+
     }
 
     @AuraEnabled(cacheable=true)
@@ -20,7 +20,6 @@ public with sharing class FirstClass {
 
     @AuraEnabled
     public static Id addCall(CallObject myCall) {
-        System.debug(myCall);
         Call__c call = new Call__c();
         call.Call_Date__c = myCall.callDate;
         call.Type__c = myCall.callType;
@@ -45,21 +44,27 @@ public with sharing class FirstClass {
         }
 
         insert callMembers;
+        updateTasks(call.Id);
         return call.Id;
     }
 
-    @AuraEnabled(cacheable=true)
-    public static List<CallMember__c> getCallMembersList(Id callId){
-            try {
-                return [
-                    SELECT Id, Call__c, Contact__r.Name
-                    FROM CallMember__c
-                    WHERE Call__r.Id =: callId
-                ];
-            } catch (Exception e) {
-                throw new AuraHandledException(e.getMessage());
-            }
+    public static void updateTasks(String callId) {
+        List<MemberTask__c> tasks = [
+            SELECT Id, Call__c
+            FROM MemberTask__c
+            WHERE Task_End__c = null
+        ];
+
+        List<MemberTask__c> memberTasks = new List<MemberTask__c>();
+        
+        for(MemberTask__c task : tasks) {
+            task.Call__c = callId;
+            memberTasks.add(task);
         }
+
+        update memberTasks;
+    }
+
     class CallObject {
         public CallObject() {
 
