@@ -37,7 +37,6 @@ public with sharing class ContactTriggerHandler extends TriggerHandler {
         List<MemberTask__c> memberTasksToUpdate = new List<MemberTask__c>();
 
         for(Contact contact : newList) {
-            System.debug(contact.Name);
             contactsId.add(contact.Id);
         }
 
@@ -57,16 +56,11 @@ public with sharing class ContactTriggerHandler extends TriggerHandler {
                 for(MemberTask__c member : memberTasks) {
                     if(member.Contact__c == newList[i].Id && member.Task_End__c == null) {
                         member.Task_End__c = Date.today();
-                        System.debug('End date: ' + member.Task_End__c);
                         points = member.Task_End__c.daysBetween(member.Task_Due_Date__c);
-                        System.debug('score: ' + points);
                         if(member.Task_Due_Date__c < member.Task_End__c) {
                             points *= -1;
                         }
-                        System.debug('score2: ' + points);
-                        System.debug('before: ' + newList[i].Points__c);
                         newList[i].Points__c += points; 
-                        System.debug('after' + newList[i].Points__c);
                         memberTasksToUpdate.add(member);
                     }
                 }
