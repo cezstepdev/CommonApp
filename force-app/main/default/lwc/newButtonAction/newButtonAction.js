@@ -1,7 +1,7 @@
 import { LightningElement, api, track, wire } from "lwc";
 import { NavigationMixin } from "lightning/navigation";
-import getOpps from '@salesforce/apex/FirstClass.getOpps';
-import addCall from "@salesforce/apex/FirstClass.addCall";
+import getOpps from '@salesforce/apex/CallController1.getOpps';
+import addCall from "@salesforce/apex/CallController1.addCall";
 
 const columns = [{
     label: 'Name',
