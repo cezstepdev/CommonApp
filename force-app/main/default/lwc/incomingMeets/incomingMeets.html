@@ -1,0 +1,49 @@
+<template>
+    <template if:true={calls}>
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered" style="width: 79rem;">
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Call Number">Call Number</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Account Name">Account</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Meet Type">Meet Type</div>
+                    </th>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Close Date">Start Date</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={calls} for:item="call" for:index="index">
+                    <tr key={call.Id}>
+                        <th data-label="Call number">
+                            <div class="slds-truncate" title={call.Name}>
+                                <a tabindex="-1" data-index={index} onclick={goToCall}>{call.Name}</a>
+                            </div>
+                        </th>
+                        <th data-label="Account">
+                            <div class="slds-truncate">
+                                <template if:true={call.account}>
+                                    <a tabindex="-1" data-index={index} onclick={goToAccount}>{call.account.Name}</a>
+                                </template>
+                            </div>
+                        </th>
+                        <th data-label="Meet Type">
+                            <div class="slds-truncate">{call.type}</div>
+                        </th>
+                        <th data-label="Start Date">
+                            <div class="slds-truncate">
+                                <lightning-formatted-date-time value={call.callDate} year="numeric" month="numeric"
+                                    day="numeric" hour="2-digit" minute="2-digit"></lightning-formatted-date-time>
+                            </div>
+                        </th>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </template>
+</template>
