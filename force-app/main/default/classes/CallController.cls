@@ -1,64 +1,37 @@
-public with sharing class CallController1 {
-    public CallController1() {
-
-    }
-
-    @AuraEnabled(cacheable=true)
-    public static List<Contact> getOpps( String searchKey, String sortBy, String sortDirection) {
-        
-        String query = 'SELECT Id, Name FROM Contact';
-        system.debug('query---'+query);
-        if ( searchKey != null && searchKey != '' ) {
-            String key = '%' + searchKey + '%';
-            query += ' WHERE Name LIKE :key';
-        }
-        if ( sortBy != null && sortDirection != null ) {
-            query += ' ORDER BY ' + sortBy + ' ' + sortDirection;
-        }
-        return Database.query( query );
-    }
+public with sharing class CallController {
 
     @AuraEnabled
-    public static Id addCall(CallObject myCall) {
-        Call__c call = new Call__c();
-        call.Call_Date__c = myCall.callDate;
-        call.Type__c = myCall.callType;
-        insert call;
-
-        List<CallMember__c> callMembers = new List<CallMember__c>();
-        if(myCall.accountId != null) {
-            for (Contact contact : [SELECT Id FROM Contact WHERE AccountId = :myCall.accountId]) {
-                CallMember__c callMember = new CallMember__c();
-                callMember.Contact__c = contact.Id;
-                callMember.Call__c = call.Id;
-                callMembers.add(callMember);
+    public static List<CallWrapper> getIncomingCalls(){
+        try {
+            List<CallWrapper> wrapperList = new List<CallWrapper>();
+       for(Call__c call :[SELECT Id,Name,Account__c,Type__c,Call_date__c FROM Call__c ORDER BY Call_date__c DESC LIMIT 10]){
+                CallWrapper wrapper = new CallWrapper();
+                wrapper.Id = call.Id;
+                wrapper.Name = call.Name;
+                wrapper.type = call.Type__c;
+                wrapper.callDate = call.Call_date__c;
+                wrapper.account = call.Account__c == null ? null : [SELECT Id,Name FROM Account WHERE Id =: call.Account__c LIMIT 1];
+                wrapperList.add(wrapper);
             }
+            return wrapperList;
+            
+        } catch (Exception e) {
+            throw new AuraHandledException(e.getMessage());
         }
-        else {
-            for (String member : myCall.members) {
-                CallMember__c callMember = new CallMember__c();
-                callMember.Contact__c = member;
-                callMember.Call__c = call.Id;
-                callMembers.add(callMember);
-            }
-        }
-
-        insert callMembers;
-        return call.Id;
     }
 
-    class CallObject {
-        public CallObject() {
+    class CallWrapper{
+        @AuraEnabled
+        public String Id;
+        @AuraEnabled
+        public String Name;
+        @AuraEnabled
+        public String type;
+        @AuraEnabled
+        public DateTime callDate;
+        @AuraEnabled
+        public Account account;
 
-        }
-
-        @AuraEnabled
-        public String accountId {get; set;}
-        @AuraEnabled
-        public Datetime callDate {get; set;}
-        @AuraEnabled 
-        public List<String> members {get; set;}
-        @AuraEnabled
-        public String callType {get; set;}
+        CallWrapper(){}
     }
 }
