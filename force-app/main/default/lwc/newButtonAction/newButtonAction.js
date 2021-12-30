@@ -79,13 +79,10 @@ export default class newButtonAction extends NavigationMixin(
     sortColumns( event ) {
         this.sortedBy = event.detail.fieldName;
         this.sortedDirection = event.detail.sortDirection;
-        return refreshApex(this.result);
-        
     }
   
     handleKeyChange( event ) {
         this.searchKey = event.target.value;
-        return refreshApex(this.result);
     }
 
     getSelectedProducts() {

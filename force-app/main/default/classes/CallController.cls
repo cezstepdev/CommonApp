@@ -40,6 +40,7 @@ public with sharing class CallController {
         Call__c call = new Call__c();
         call.Call_Date__c = myCall.callDate;
         call.Type__c = myCall.callType;
+        call.Account__c = myCall.accountId;
         insert call;
 
         List<CallMember__c> callMembers = new List<CallMember__c>();

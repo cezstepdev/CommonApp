@@ -43,7 +43,7 @@ public with sharing class ContactTriggerHandler extends TriggerHandler {
         List<MemberTask__c> memberTasks = [
             SELECT Id, TaskStart__c, Task_End__c, Task_Due_Date__c, Contact__c
             FROM MemberTask__c
-            WHERE Contact__c IN :contactsId
+            WHERE Contact__c IN :contactsId 
         ];
 
         Map<String, Id> taskMap = new Map<String, Id>();
