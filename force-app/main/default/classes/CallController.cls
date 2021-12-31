@@ -67,10 +67,22 @@ public with sharing class CallController {
     }
 
     public static void updateTasks(String callId) {
+        List<String> callMembersId = new List<String>();
+        List<CallMember__c> callMembers = [
+            SELECT Contact__c 
+            FROM CallMember__c 
+            WHERE Call__c = :callId
+        ];
+
+        for(CallMember__c callMember : callMembers) {
+            callMembersId.add(callMember.Contact__c);
+        }
+
         List<MemberTask__c> tasks = [
             SELECT Id, Call__c
             FROM MemberTask__c
             WHERE Task_End__c = null
+            AND Contact__c IN :callMembersId
         ];
 
         List<MemberTask__c> memberTasks = new List<MemberTask__c>();
